@@ -1,0 +1,30 @@
+{
+  "name": "e-com2",
+  "version": "1.0.0",
+  "description": "\"again doing e-com\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node backend/app.js",
+    "dev": "nodemon backend/app.js",
+    "prod": "nodemon backend/app.js",
+    "client": "npm run dev --prefix frontend",
+    "both": "concurrently \"npm run dev\" \"npm run client\"",
+    "data:import": "node backend/seeder.js",
+    "data:destroy": "node backend/seeder.js -d"
+  },
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "daisyui": "^5.1.18",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.18.1",
+    "nodemon": "^3.1.10",
+    "qs": "^6.14.0"
+  }
+}
