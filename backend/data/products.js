@@ -1,8 +1,11 @@
+// backend/data/products.js
 
 const products = [
   {
     name: 'Modern Leather Sofa',
-    image: '/images/sofa.jpeg',
+    images: [
+      { public_id: 'sofa-1', url: '/images/sofa.jpeg' }
+    ],
     description:
       'Upgrade your living room with this sleek and comfortable modern leather sofa. Perfect for relaxation and entertainment.',
     brand: 'Furniture World',
@@ -13,9 +16,10 @@ const products = [
     numReviews: 10,
   },
   {
-
     name: 'Wooden Dining Table Set',
-    image: '/images/wooden-dining.jpeg',
+    images: [
+      { public_id: 'dining-1', url: '/images/wooden-dining.jpeg' }
+    ],
     description:
       'Gather your family and friends around this elegant wooden dining table set. Crafted with high-quality materials for durability and style.',
     brand: 'Home Harmony',
@@ -27,7 +31,9 @@ const products = [
   },
   {
     name: 'Vintage Bookshelf',
-    image: '/images/vintage-bookshelf.jpeg',
+    images: [
+      { public_id: 'bookshelf-1', url: '/images/vintage-bookshelf.jpeg' }
+    ],
     description:
       'Add a touch of nostalgia to your home with this vintage bookshelf. Ample storage space for books, decor, and more.',
     brand: 'Antique Designs',
@@ -38,9 +44,10 @@ const products = [
     numReviews: 8,
   },
   {
-
     name: 'Contemporary Coffee Table',
-    image: '/images/coffee-table.jpeg',
+    images: [
+      { public_id: 'coffee-table-1', url: '/images/coffee-table.jpeg' }
+    ],
     description:
       'Enhance your living space with this stylish contemporary coffee table. Features a minimalist design with a functional storage shelf.',
     brand: 'Modern Living',
@@ -52,7 +59,9 @@ const products = [
   },
   {
     name: 'Comfortable Recliner Chair',
-    image: '/images/recliner-chair.jpeg',
+    images: [
+      { public_id: 'recliner-1', url: '/images/recliner-chair.jpeg' }
+    ],
     description:
       'Relax in ultimate comfort with this plush recliner chair. Perfect for lounging after a long day.',
     brand: 'Cozy Home',
@@ -64,7 +73,9 @@ const products = [
   },
   {
     name: 'Rustic Bedroom Dresser',
-    image: '/images/bedroom-dresser.jpeg',
+    images: [
+      { public_id: 'dresser-1', url: '/images/bedroom-dresser.jpeg' }
+    ],
     description:
       'Complete your bedroom decor with this charming rustic dresser. Ample storage space for clothing and accessories.',
     brand: 'Country Living',
@@ -77,5 +88,3 @@ const products = [
 ];
 
 export default products;
-
-

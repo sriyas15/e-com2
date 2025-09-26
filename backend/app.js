@@ -4,9 +4,14 @@ import { connectDB } from "./config/dbConnect.js";
 import productRoutes from "./routes/productRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import qs from "qs";
+import cors from 'cors';
 
 const app = express();
 
+app.use(cors({
+  origin: "http://localhost:5173",  // your frontend URL
+  credentials: true,                // allow cookies
+}));
 app.use(express.json());
 app.set("query parser", str => qs.parse(str));
 
