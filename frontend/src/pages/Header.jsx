@@ -21,7 +21,7 @@ const Header = () => {
             
             <li>
               <Link
-                to=""
+                to="/cart"
                 className="relative flex items-center gap-1 hover:bg-base-200 rounded-lg px-3 py-2 transition"
               >
                 🛒 Cart
@@ -56,8 +56,8 @@ const Header = () => {
                 </details>
               ) :  */}
               
-                <Link to="" className="btn btn-primary btn-sm rounded-lg px-4">
-                  Sign In
+                <Link to="/login" className="btn btn-primary btn-sm rounded-lg px-4">
+                  Log In
                 </Link>
               
             </li>

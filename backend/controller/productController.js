@@ -26,7 +26,7 @@ export const getProductDetails = asyncHandler(async(req,res)=>{
     const product = await Product.findById(req.params.id);
 
     if(!product){
-        res.status(404).json({
+       return res.status(404).json({
             error:"Product not found"
         })
     }

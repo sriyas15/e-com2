@@ -13,7 +13,7 @@ const products = [
     price: 899.99,
     stock: 15,
     ratings: 45,
-    numReviews: 10,
+    numOfReviews: 10,
   },
   {
     name: 'Wooden Dining Table Set',
@@ -27,7 +27,7 @@ const products = [
     price: 549.99,
     stock: 8,
     ratings: 45,
-    numReviews: 6,
+    numOfReviews: 6,
   },
   {
     name: 'Vintage Bookshelf',
@@ -41,7 +41,7 @@ const products = [
     price: 349.99,
     stock: 12,
     ratings: 40,
-    numReviews: 8,
+    numOfReviews: 8,
   },
   {
     name: 'Contemporary Coffee Table',
@@ -55,7 +55,7 @@ const products = [
     price: 199.99,
     stock: 0,
     ratings: 45,
-    numReviews: 15,
+    numOfReviews: 15,
   },
   {
     name: 'Comfortable Recliner Chair',
@@ -69,7 +69,7 @@ const products = [
     price: 299.99,
     stock: 6,
     ratings: 40,
-    numReviews: 4,
+    numOfReviews: 4,
   },
   {
     name: 'Rustic Bedroom Dresser',
@@ -83,7 +83,7 @@ const products = [
     price: 449.99,
     stock: 10,
     ratings: 40,
-    numReviews: 7,
+    numOfReviews: 7,
   },
 ];
 
