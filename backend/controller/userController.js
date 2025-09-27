@@ -11,7 +11,6 @@ export const registerUser = asyncHandler(async(req,res)=>{
         throw new Error("Please fill all the fields");
     }
 
-
     const userExist = await User.findOne({email});
 
     if(userExist){

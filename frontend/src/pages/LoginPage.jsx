@@ -1,13 +1,16 @@
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
+import { useLoginMutation } from "../slices/usersApiSlice";
 
 
 
 const LoginPage = () => {
 
-  const [email,setEmail] = useState("");
+    const [email,setEmail] = useState("");
     const [password,setPassword] = useState("");
+
+    const [ login,{isLoading} ] = useLoginMutation();
 
     const formHandler = async(e)=>{
 
@@ -40,21 +43,18 @@ const LoginPage = () => {
                     <input type="password" onChange={(e)=>setPassword(e.target.value)}  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter Your Password" />
                 </div>
 
-                {/* <div className="flex gap-5">
-                    <button type="submit" disabled={isLoading} className={`mt-5 text-white font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 
+               
+                    <button type="submit" disabled={isLoading} className={`mt-5 block text-white font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 
                             focus:outline-none focus:ring-4 ${isLoading 
                             ? "bg-blue-400 cursor-not-allowed opacity-70" 
                             : "bg-blue-700 hover:bg-blue-800 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                             }`}>
                         {isLoading ? "Signing In" : "Sign In"}
                     </button>
-
-                    <a href="/signup"
-                        className="mt-5 focus:outline-none text-white bg-yellow-950 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">
-                        Sign UP
-                    </a>
-
-                </div> */}
+                    <div className="mt-3">
+                        <p className="mt-6 inline">If you don't have account</p>
+                        <a className='ml-3  underline hover:text-blue-600 transition-colors duration-200' href="/signup">Create Account</a>
+                    </div>
 
             </form>
         </main>
