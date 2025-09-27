@@ -26,10 +26,19 @@ export const registerUser = asyncHandler(async(req,res)=>{
 
     const token = user.getToken();
 
+    res.cookie( "jwt",token,{
+        httpOnly: true,
+        secure: false,
+        sameSite: "strict",
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+    });
+
     res.status(201).json({
-        user,
+        _id: user._id,
+        name: user.name,
+        email: user.email,
         token,
-        message:"Registered a new user"
+        message:"Registered a new user",
     });
 
 });
@@ -46,12 +55,19 @@ export const login = asyncHandler(async(req,res)=>{
     let user = await User.findOne({ email }).select("+password");
 
     if(!user){
-        res.status(401).json({message:"Invalid Email"});
+       return res.status(401).json({message:"Invalid Email"});
     }
 
     if( user && (await user.matchPassword(password))){
 
         const token = user.getToken();
+
+        res.cookie( "jwt",token,{
+            httpOnly: true,
+            secure: false,
+            sameSite: "strict",
+            maxAge: 30 * 24 * 60 * 60 * 1000,
+        });
 
         res.status(200).json({
             user,
@@ -59,7 +75,7 @@ export const login = asyncHandler(async(req,res)=>{
             message:"Logged In"
         })
     }else{
-        res.status(401).json({message:"Invalid Password"});
+       return res.status(401).json({message:"Invalid Password"});
     }
 
 

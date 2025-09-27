@@ -21,7 +21,8 @@ const SignupPage = () => {
         }else{
 
             try{
-                await registerUser({ name,email,password }).unwrap();
+                const data = await registerUser({ name,email,password }).unwrap();
+                console.log(data)
                 toast.success("Successfully Registered");
                 navigate('/');
             }

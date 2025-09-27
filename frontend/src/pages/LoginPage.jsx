@@ -23,6 +23,7 @@ const LoginPage = () => {
 
         try {
             const res = await login({ email, password }).unwrap();
+            console.log(res)
             toast.success(`Welcome back, ${res.name || "User"}!`);
             navigate("/");
         } catch (err) {

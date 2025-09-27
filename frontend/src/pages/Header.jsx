@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
 
+  // console.log(data) 
+
   return (
     <header>
       <div className="flex justify-between p-5 navbar bg-base-100 shadow-sm px-4">
