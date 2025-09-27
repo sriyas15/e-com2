@@ -2,6 +2,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
 import { useLoginMutation } from "../slices/usersApiSlice";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -12,9 +13,22 @@ const LoginPage = () => {
 
     const [ login,{isLoading} ] = useLoginMutation();
 
+    const navigate = useNavigate();
+
     const formHandler = async(e)=>{
 
         e.preventDefault();
+
+        if( !email || !password) toast.error(`Please fill all the fields`);
+
+        try {
+            const res = await login({ email, password }).unwrap();
+            toast.success(`Welcome back, ${res.name || "User"}!`);
+            navigate("/");
+        } catch (err) {
+            console.log(err?.data?.message);
+            toast.error(err?.data?.message || "Invalid email or password");
+            }
     }
 
     return (
@@ -40,7 +54,7 @@ const LoginPage = () => {
                             </svg>
                         </span>
                     </div>
-                    <input type="password" onChange={(e)=>setPassword(e.target.value)}  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter Your Password" />
+                    <input type="password" value={password} onChange={(e)=>setPassword(e.target.value)}  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter Your Password" />
                 </div>
 
                

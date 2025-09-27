@@ -1,22 +1,34 @@
 import { useRegisterUserMutation } from "../slices/usersApiSlice";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SignupPage = () => {
 
     const [ registerUser,{isLoading} ] = useRegisterUserMutation();
 
     const [name,setName] = useState('');
-    const [newEmail,setNewEmail] = useState('');
-    const [newPassword,setNewPassword] = useState('');
+    const [email,setEmail] = useState('');
+    const [password,setPassword] = useState('');
+
+    const navigate = useNavigate();
 
     const signupFormHandler = async(e)=>{
         e.preventDefault();
 
-        if(newEmail === "" || newPassword === "" || name === ""){
+        if(email === "" || password === "" || name === ""){
             toast.error("Please Fill Both Fields");
         }else{
 
+            try{
+                await registerUser({ name,email,password }).unwrap();
+                toast.success("Successfully Registered");
+                navigate('/');
+            }
+            catch(e){
+                console.log(e);
+                toast.error(e?.data?.message || "Registration failed. Try again.");
+            }
         }
     }
 
@@ -46,7 +58,7 @@ const SignupPage = () => {
                             <path d="M11.241 9.817c-.36.275-.801.425-1.255.427-.428 0-.845-.138-1.187-.395L0 2.6V14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2.5l-8.759 7.317Z" />
                         </svg>
                     </div>
-                    <input type="text"  value={newEmail} onChange={(e)=>setNewEmail(e.target.value)}  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter Your Email" />
+                    <input type="text"  value={email} onChange={(e)=>setEmail(e.target.value)}  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter Your Email" />
                 </div>
 
                 <label htmlFor="password-icon" className="block mt-2 mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
@@ -58,7 +70,7 @@ const SignupPage = () => {
                             </svg>
                         </span>
                     </div>
-                    <input type="password" onChange={(e)=>setNewPassword(e.target.value)}  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter Your Password" />
+                    <input type="password" value={password} onChange={(e)=>setPassword(e.target.value)}  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter Your Password" />
                 </div>
 
                 
