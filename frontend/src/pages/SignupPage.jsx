@@ -2,6 +2,8 @@ import { useRegisterUserMutation } from "../slices/usersApiSlice";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "../slices/authSlice";
 
 const SignupPage = () => {
 
@@ -12,6 +14,7 @@ const SignupPage = () => {
     const [password,setPassword] = useState('');
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const signupFormHandler = async(e)=>{
         e.preventDefault();
@@ -22,7 +25,7 @@ const SignupPage = () => {
 
             try{
                 const data = await registerUser({ name,email,password }).unwrap();
-                console.log(data)
+                dispatch(setCredentials({...data}));
                 toast.success("Successfully Registered");
                 navigate('/');
             }

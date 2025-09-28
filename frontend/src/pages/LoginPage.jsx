@@ -3,17 +3,21 @@ import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
 import { useLoginMutation } from "../slices/usersApiSlice";
 import { useNavigate } from "react-router-dom";
-
+import { setCredentials } from "../slices/authSlice";
+import { useDispatch } from "react-redux";
+import { Eye, EyeOff } from "lucide-react";
 
 
 const LoginPage = () => {
 
-    const [email,setEmail] = useState("");
-    const [password,setPassword] = useState("");
+    const [ email,setEmail ] = useState("");
+    const [ password,setPassword ] = useState("");
+    const [ showPassword,setShowPassword ] = useState(false);
 
     const [ login,{isLoading} ] = useLoginMutation();
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const formHandler = async(e)=>{
 
@@ -23,7 +27,9 @@ const LoginPage = () => {
 
         try {
             const res = await login({ email, password }).unwrap();
-            console.log(res)
+
+            dispatch(setCredentials({...res}));
+            
             toast.success(`Welcome back, ${res.name || "User"}!`);
             navigate("/");
         } catch (err) {
@@ -55,7 +61,14 @@ const LoginPage = () => {
                             </svg>
                         </span>
                     </div>
-                    <input type="password" value={password} onChange={(e)=>setPassword(e.target.value)}  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter Your Password" />
+                        <input type={showPassword ? "text" : "password"} value={password} 
+                          onChange={(e)=>setPassword(e.target.value)} 
+                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter Your Password" />
+                        
+                        <button type="button" onClick={()=>setShowPassword( !showPassword )}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white">
+                             {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                        </button>
                 </div>
 
                

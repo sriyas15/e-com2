@@ -8,6 +8,7 @@ import ProductDetails from './pages/ProductDetails.jsx';
 import Cart from './pages/Cart.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import SignupPage from './pages/SignupPage.jsx';
+import ProfileScreen from './pages/ProfileScreen.jsx';
 import store from './store.js';
 import { Provider } from "react-redux";
 
@@ -20,6 +21,7 @@ const router = createBrowserRouter(
       <Route path='/product/:id' element={<ProductDetails/>}/>
       <Route path='/login' element={<LoginPage/>}/>
       <Route path='/signup' element={<SignupPage/>}/>
+      <Route path='/profile' element={<ProfileScreen/>}/>
 
     </Route>
   ))

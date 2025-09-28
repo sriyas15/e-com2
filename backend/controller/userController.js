@@ -58,7 +58,7 @@ export const login = asyncHandler(async(req,res)=>{
        return res.status(401).json({message:"Invalid Email"});
     }
 
-    if( user && (await user.matchPassword(password))){
+    if( user && (await user.matchPassword(password)) ){
 
         const token = user.getToken();
 
@@ -77,6 +77,15 @@ export const login = asyncHandler(async(req,res)=>{
     }else{
        return res.status(401).json({message:"Invalid Password"});
     }
+});
 
+export const logout = asyncHandler(async(req,res)=>{
 
-})
+    res.cookie("jwt","",{
+        httpOnly:true,
+        expires: new Date(0),
+    });
+
+    res.status(200).json({ message:`Logged out Successfully`});
+
+});
