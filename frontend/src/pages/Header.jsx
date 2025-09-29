@@ -4,6 +4,8 @@ import { logout as logoutAction } from "../slices/authSlice";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { useLogoutMutation } from "../slices/usersApiSlice";
+import { IoIosSettings } from "react-icons/io";
+
 
 const Header = () => {
 
@@ -50,6 +52,15 @@ const Header = () => {
               <Link to="/cart"
                 className="relative flex items-center gap-1 hover:bg-base-200 rounded-lg px-3 py-2 transition">
                 🛒 Cart
+              </Link>
+            </li>
+
+            <li>
+              <Link
+                to="/settings"
+                className="relative text-xl flex items-center hover:bg-base-200 rounded-lg px-3 py-2 transition"
+              >
+                <IoIosSettings />
               </Link>
             </li>
 
