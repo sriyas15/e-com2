@@ -1,6 +1,10 @@
 import { connectDB } from "./config/dbConnect.js";
 import products from "./data/products.js";
+import users from "./data/users.js";
+import cart from "./data/cart.js";
 import Product from "./models/productModel.js";
+import Cart from "./models/cartModel.js";
+import User from "./models/userModel.js";
 
 connectDB();
 
@@ -10,6 +14,8 @@ const importData = async()=>{
         await Product.deleteMany();
 
         await Product.insertMany(products);
+        await User.insertMany(users);
+        await Cart.insertMany(cart);
 
         console.log("Products Imported");
         process.exit();
@@ -24,6 +30,8 @@ const importData = async()=>{
 const destroyData = async()=>{
     try {
         await Product.deleteMany();
+        await User.deleteMany();
+        await Cart.deleteMany();
 
         console.log("Data Destroyed");
 

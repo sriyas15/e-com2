@@ -1,6 +1,10 @@
 import { useGetProductByIdQuery } from "../slices/productsApiSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
+import { addItemToCart } from "../slices/cartSlice";
+import { useDispatch } from "react-redux";
+import { useAddToCartMutation } from "../slices/cartApiSlice";
+
 
 const ProductDetails = () => {
   const { id: productId } = useParams();
@@ -8,10 +12,21 @@ const ProductDetails = () => {
   const product = data?.product;
 
   const [qty, setQty] = useState(1);
-  const navigate = useNavigate();
 
-  const addToCartHandler = () => {
-    // dispatch(addToCart({ ...product, qty }))
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [addToCartApi, { isLoading: adding }] = useAddToCartMutation();
+
+  const addToCartHandler = async() => {
+    try{
+      const cartItem = await addToCartApi( { productId:product._id,quantity:qty } ).unwrap();
+      console.log(cartItem)
+    }
+    catch(e){
+      console.error(e);
+      
+    }
   };
 
   if (isLoading) return <p>Loading...</p>;
@@ -39,7 +54,7 @@ const ProductDetails = () => {
             className="w-25 my-5 inline-block"
             alt="rating"
           />
-          {/* ✅ Use correct property name */}
+          
           <span className="ml-3">{product.numOfReviews} Reviews</span>
 
           <p className="py-6">{product.description}</p>
@@ -65,10 +80,10 @@ const ProductDetails = () => {
 
           <button
             onClick={addToCartHandler}
-            disabled={product.stock === 0}
+            disabled={product.stock === 0 || adding}
             className="btn btn-primary my-3 block"
           >
-            Add to Cart
+            { adding ? "Adding..." : "Add to Cart"}
           </button>
         </div>
       </div>

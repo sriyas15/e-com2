@@ -3,11 +3,14 @@ import dotenv from 'dotenv';
 import { connectDB } from "./config/dbConnect.js";
 import productRoutes from "./routes/productRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import cartRoutes from "./routes/cartRoutes.js";
 import qs from "qs";
 import cors from 'cors';
+import cookieParser from "cookie-parser";
 
 const app = express();
 
+app.use(cookieParser());
 app.use(cors({
   origin: "http://localhost:5173",  // your frontend URL
   credentials: true,                // allow cookies
@@ -26,6 +29,7 @@ app.get("/",(req,res)=>{
 
 app.use("/api/v1",productRoutes);
 app.use("/api/v1/users",userRoutes);
+app.use("/api/v1/cart",cartRoutes);
 
 app.listen(process.env.PORT,()=>{
     console.log(`Server is running on PORT: ${process.env.PORT}`)
