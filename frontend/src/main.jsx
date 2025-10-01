@@ -10,6 +10,7 @@ import LoginPage from './pages/LoginPage.jsx';
 import SignupPage from './pages/SignupPage.jsx';
 import ProfileScreen from './pages/ProfileScreen.jsx';
 import Settings from './pages/Settings.jsx';
+import CheckoutPage from './pages/CheckoutPage.jsx';
 import store from './store.js';
 import { Provider } from "react-redux";
 
@@ -24,6 +25,7 @@ const router = createBrowserRouter(
       <Route path='/signup' element={<SignupPage/>}/>
       <Route path='/profile' element={<ProfileScreen/>}/>
       <Route path='/settings' element={<Settings/>}/>
+      <Route path='/shipping' element={<CheckoutPage/>}/>
 
     </Route>
   ))

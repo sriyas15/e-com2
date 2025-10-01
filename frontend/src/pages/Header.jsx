@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { useLogoutMutation } from "../slices/usersApiSlice";
 import { IoIosSettings } from "react-icons/io";
+import { useFetchCartQuery } from "../slices/cartApiSlice";
 
 
 const Header = () => {
@@ -15,6 +16,10 @@ const Header = () => {
   
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const { data: cartData, refetch } = useFetchCartQuery();
+
+  const cartLength = cartData?.items?.length;
 
   const handleLogout = async()=>{
 
@@ -45,14 +50,39 @@ const Header = () => {
           </Link>
         </div>
 
+        <div>
+          <label className="input">
+            <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <g
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                strokeWidth="2.5"
+                fill="none"
+                stroke="currentColor"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </g>
+            </svg>
+            <input type="search" required placeholder="Search" />
+          </label>
+        </div>
+        
         <div className="">
           <ul className="flex items-center gap-2">
             
             <li>
               <Link to="/cart"
                 className="relative flex items-center gap-1 hover:bg-base-200 rounded-lg px-3 py-2 transition">
-                🛒 Cart
+                🛒 Cart 
+                  {cartLength > 0 && (
+                  <span className="badge badge-primary badge-sm absolute -top-2 -right-2">
+                    {cartLength}
+                  </span>
+                )}
+                
               </Link>
+              
             </li>
 
             <li>

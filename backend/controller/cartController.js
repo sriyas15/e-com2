@@ -16,22 +16,12 @@ export const getCart = asyncHandler(async (req, res) => {
     });
   }
 
-  // In getCart
-const cartResponse = {
-  ...cart._doc,
-  items: cart.items.map((item) => ({
-    ...item._doc,
-    countInStock: item.countInStock, // must exist
-  })),
-};
-
-
-  res.status(200).json(cartResponse);
+  res.status(200).json(cart);
 });
 
 
 export const addToCart = asyncHandler(async (req, res) => {
-  const { productId, quantity } = req.body;
+  const { productId,quantity } = req.body;
 
   if (!productId || !quantity) {
     res.status(400);

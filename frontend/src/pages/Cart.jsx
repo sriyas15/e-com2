@@ -96,7 +96,7 @@ const Cart = () => {
                       <select
                         name="quantity"
                         value={item.quantity}
-                        className="bg-gray-700 text-white border border-gray-600 rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="bg-gray-700 text-white cursor-pointer border border-gray-600 rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         onChange={(e) => handleQtyChange(item.product, e.target.value)}
                       >
                         {[...Array(item.countInStock).keys()].map((x) => (
@@ -110,7 +110,7 @@ const Cart = () => {
 
                   <button
                     onClick={() => removeCartItemHandler(item.product)}
-                    className="absolute top-2 right-2 text-red-500 hover:text-red-600 text-lg"
+                    className="cursor-pointer absolute top-2 right-2 text-red-500 hover:text-red-600 text-lg"
                   >
                     <FontAwesomeIcon icon={faTrash} />
                   </button>
@@ -136,7 +136,7 @@ const Cart = () => {
               <span>Total:</span> <span>₹{totalPrice.toFixed(0)}</span>
             </p>
             <button
-              onClick={checkoutHandler}
+              onClick={checkoutHandler} 
               className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg shadow-md transition-transform transform hover:scale-105"
             >
               Proceed to Checkout

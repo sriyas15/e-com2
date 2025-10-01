@@ -67,7 +67,7 @@ const ProductDetails = () => {
               <select
                 name="quantity"
                 onChange={(e) => setQty(Number(e.target.value))}
-                className="select select-primary w-20 ml-2"
+                className="select select-primary w-20 ml-2 cursor-pointer"
               >
                 {[...Array(product.stock).keys()].map((count) => (
                   <option key={count + 1} value={count + 1}>

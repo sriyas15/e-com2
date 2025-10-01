@@ -16,7 +16,8 @@ const ProductCard = ({ product }) => {
         </figure>
         <div className="card-body items-center text-center">
           <h2 className="card-title">{product.name}</h2>
-          <h3 className="text-lg">{product.price}</h3>
+          <h3 className="text-lg">₹{product.price}</h3>
+          <p className="line-clamp-[1]">{product.description}</p>
           <p className="my-3"><img src={`/ratings/rating-${product.ratings}.png`} alt="" className="w-25"/></p>
           <div className="card-actions">
             <button className="btn btn-primary">Buy Now</button>

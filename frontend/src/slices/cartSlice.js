@@ -64,9 +64,8 @@ const cartSlice = createSlice({
     status: "idle", // loading status
     error: null,
   },
-  reducers: {
-    // Optional: local updates like updateQty/removeCart can stay for instant UI feedback
-  },
+  reducers: {},
+  
   extraReducers: (builder) => {
     builder
       .addCase(fetchCart.fulfilled, (state, action) => {
