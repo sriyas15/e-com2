@@ -4,12 +4,12 @@ import asyncHandler from "../middleware/asyncHandler.js";
 
 export const getProducts = asyncHandler(async(req,res)=>{
 
-    const apiFilters = new ApiFilters(Product,req.query).search().filter();
+    const apiFilters = new ApiFilters( Product,req.query ).search().filter();
     const getProducts = await Product.find({});
 
     const products = await apiFilters.query;
 
-    res.status(200).json({products,getProducts});
+    res.status(200).json( { products,getProducts } );
 
 })
 
@@ -67,5 +67,20 @@ export const deleteProduct = asyncHandler(async(req, res) => {
         message:"Product Deleted"
     });
 
-})
+});
+
+export const getProductSuggestions = asyncHandler( async ( req,res ) => {
+
+    const keyword = req.query.keyword || "";
+
+    if( !keyword ) return res.status(200).json({ suggestions:[] });
+
+    const suggestions = await Product.find({
+        name: { $regex: keyword, $options: "i" },
+    }).limit(5).select("name");
+
+
+    res.status(200).json({suggestions});
+
+});
 

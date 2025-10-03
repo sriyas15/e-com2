@@ -1,90 +1,139 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { logout as logoutAction } from "../slices/authSlice";
-import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { useLogoutMutation } from "../slices/usersApiSlice";
 import { IoIosSettings } from "react-icons/io";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import { useLogoutMutation } from "../slices/usersApiSlice";
+import { logout as logoutAction } from "../slices/authSlice";
 import { useFetchCartQuery } from "../slices/cartApiSlice";
 
-
 const Header = () => {
-
-  const { userInfo } = useSelector((state)=>state.auth);
+  const { userInfo } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { data: cartData } = useFetchCartQuery();
+  const cartLength = cartData?.items?.length || 0;
 
   const [logout] = useLogoutMutation();
-  
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const [searchInput, setSearchInput] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
 
-  const { data: cartData, refetch } = useFetchCartQuery();
-
-  const cartLength = cartData?.items?.length;
-
-  const handleLogout = async()=>{
-
-    try{
-      
+  // Logout handler
+  const handleLogout = async () => {
+    try {
       dispatch(logoutAction());
       await logout();
+      toast.success("Logged Out");
+      navigate("/login");
+    } catch (err) {
+      console.error(err);
+      toast.error(err?.data?.message || "Logout failed");
+    }
+  };
 
-      toast.success(`Logged Out`);
-      navigate('/login');
+  // Fetch suggestions on input change
+  useEffect(() => {
+    if (!searchInput.trim()) {
+      setSuggestions([]);
+      return;
     }
 
-    catch(e){
-      console.log(e);
-      toast.error(`${e?.data?.message}`);
-    }
+    const fetchSuggestions = async () => {
+      try {
+        const { data: suggestionsData } = await axios.get(
+          `http://localhost:5000/api/v1/products/suggestions?keyword=${searchInput}`
+        );
+        // Ensure it's an array
+        const list = Array.isArray(suggestionsData?.suggestions)
+          ? suggestionsData.suggestions
+          : [];
+        setSuggestions(list);
+      } catch (err) {
+        console.error(err);
+        setSuggestions([]);
+      }
+    };
 
-  }
+    fetchSuggestions();
+  }, [searchInput]);
+
+  // Search handler
+  const handleSearch = (keyword) => {
+    if (!keyword.trim()) return;
+    navigate(`/search?keyword=${keyword.trim()}`);
+    setSearchInput("");
+    setSuggestions([]);
+  };
+
+  // Enter key press handler
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && searchInput.trim()) {
+      handleSearch(searchInput);
+    }
+  };
 
   return (
     <header>
       <div className="flex justify-between p-5 navbar bg-base-100 shadow-sm px-4">
-        
+        {/* Logo */}
         <div className="flex">
-          <Link to="/"
-            className="text-xl  font-bold tracking-wide text-primary hover:text-primary/80 transition">
+          <Link
+            to="/"
+            className="text-xl font-bold tracking-wide text-primary hover:text-primary/80 transition"
+          >
             E-Commerce
           </Link>
         </div>
 
-        <div>
-          <label className="input">
-            <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <g
-                strokeLinejoin="round"
-                strokeLinecap="round"
-                strokeWidth="2.5"
-                fill="none"
-                stroke="currentColor"
-              >
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="m21 21-4.3-4.3"></path>
-              </g>
-            </svg>
-            <input type="search" required placeholder="Search" />
-          </label>
+        {/* Search Bar */}
+        <div className="relative w-80">
+          <input
+            type="search"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="Search products..."
+            className="input input-bordered w-full"
+          />
+
+          {/* Suggestions Dropdown */}
+          {Array.isArray(suggestions) && suggestions.length > 0 && (
+            <ul className="absolute bg-white border w-full mt-1 rounded shadow-lg z-50 max-h-60 overflow-auto">
+              {suggestions.map((s, index) => (
+                <li
+                  key={index}
+                  className="px-3 w-full py-2 hover:bg-gray-200 text-black cursor-pointer"
+                  onClick={() =>
+                    handleSearch(typeof s === "string" ? s : s.name)
+                  }
+                >
+                  {typeof s === "string" ? s : s.name}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
-        
-        <div className="">
+
+        {/* Right Side: Cart + Settings + User */}
+        <div>
           <ul className="flex items-center gap-2">
-            
+            {/* Cart */}
             <li>
-              <Link to="/cart"
-                className="relative flex items-center gap-1 hover:bg-base-200 rounded-lg px-3 py-2 transition">
-                🛒 Cart 
-                  {cartLength > 0 && (
+              <Link
+                to="/cart"
+                className="relative flex items-center gap-1 hover:bg-base-200 rounded-lg px-3 py-2 transition"
+              >
+                🛒 Cart
+                {cartLength > 0 && (
                   <span className="badge badge-primary badge-sm absolute -top-2 -right-2">
                     {cartLength}
                   </span>
                 )}
-                
               </Link>
-              
             </li>
 
+            {/* Settings */}
             <li>
               <Link
                 to="/settings"
@@ -94,9 +143,9 @@ const Header = () => {
               </Link>
             </li>
 
-            {/* User Info / Sign In */}
+            {/* User Info / Login */}
             <li>
-               {userInfo ? (
+              {userInfo ? (
                 <details className="dropdown dropdown-end">
                   <summary className="btn btn-ghost rounded-lg">
                     {userInfo.user.name}
@@ -108,23 +157,26 @@ const Header = () => {
                       </Link>
                     </li>
                     <li>
-                      <button className="hover:bg-base-200 rounded-lg">
-                        💡 Light
-                      </button>
+                      <button className="hover:bg-base-200 rounded-lg">💡 Light</button>
                     </li>
                     <li>
-                      <button onClick={handleLogout} className="hover:bg-base-200 rounded-lg text-error">
+                      <button
+                        onClick={handleLogout}
+                        className="hover:bg-base-200 rounded-lg text-error"
+                      >
                         🚪 Log Out
                       </button>
                     </li>
                   </ul>
                 </details>
-              ) :  
-              
-                <Link to="/login" className="btn btn-primary btn-sm rounded-lg px-4">
+              ) : (
+                <Link
+                  to="/login"
+                  className="btn btn-primary btn-sm rounded-lg px-4"
+                >
                   Log In
                 </Link>
-                }
+              )}
             </li>
           </ul>
         </div>
