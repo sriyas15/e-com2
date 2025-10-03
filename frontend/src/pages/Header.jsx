@@ -18,6 +18,8 @@ const Header = () => {
   const [logout] = useLogoutMutation();
   const [searchInput, setSearchInput] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const [ isFocused,setIsFocused ] = useState(false);
+  const [highlightIndex, setHighlightIndex] = useState(-1);
 
   // Logout handler
   const handleLogout = async () => {
@@ -68,10 +70,49 @@ const Header = () => {
 
   // Enter key press handler
   const handleKeyDown = (e) => {
-    if (e.key === "Enter" && searchInput.trim()) {
-      handleSearch(searchInput);
-    }
-  };
+  if (!suggestions.length) return;
+
+  switch (e.key) {
+
+    case "ArrowDown":
+      e.preventDefault();
+      setHighlightIndex((prev) =>
+        prev < suggestions.length - 1 ? prev + 1 : 0
+      );
+      break;
+
+    case "ArrowUp":
+      e.preventDefault();
+      setHighlightIndex((prev) =>
+        prev > 0 ? prev - 1 : suggestions.length - 1
+      );
+      break;
+
+    case "Enter":
+      e.preventDefault();
+      if (highlightIndex >= 0 && highlightIndex < suggestions.length) {
+        handleSearch(
+          typeof suggestions[highlightIndex] === "string"
+            ? suggestions[highlightIndex]
+            : suggestions[highlightIndex].name
+        );
+      } else if (searchInput.trim()) {
+        handleSearch(searchInput);
+      }
+      setHighlightIndex(-1);
+      break;
+
+    case "Escape":
+      setSuggestions([]);
+      setHighlightIndex(-1);
+      break;
+  }
+};
+
+useEffect(() => {
+  setHighlightIndex(-1);
+}, [searchInput]);
+
 
   return (
     <header>
@@ -91,6 +132,8 @@ const Header = () => {
           <input
             type="search"
             value={searchInput}
+            onFocus={ ()=> setIsFocused(true) }
+            onBlur={ ()=> setTimeout( ()=>setIsFocused(false),100 )}
             onChange={(e) => setSearchInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Search products..."
@@ -98,19 +141,23 @@ const Header = () => {
           />
 
           {/* Suggestions Dropdown */}
-          {Array.isArray(suggestions) && suggestions.length > 0 && (
+          { isFocused && Array.isArray(suggestions) && suggestions.length > 0 && (
             <ul className="absolute bg-white border w-full mt-1 rounded shadow-lg z-50 max-h-60 overflow-auto">
-              {suggestions.map((s, index) => (
-                <li
-                  key={index}
-                  className="px-3 w-full py-2 hover:bg-gray-200 text-black cursor-pointer"
-                  onClick={() =>
-                    handleSearch(typeof s === "string" ? s : s.name)
-                  }
-                >
-                  {typeof s === "string" ? s : s.name}
-                </li>
-              ))}
+              { suggestions.map((s, index) => {
+                const name = typeof s === "string" ? s : s.name;
+                return (
+                  <li
+                    key={index}
+                    className={`px-3 py-2 text-black cursor-pointer ${
+                      index === highlightIndex ? "bg-gray-300" : "hover:bg-gray-200"
+                    }`}
+                    onMouseDown={() => handleSearch(name)} // use onMouseDown to avoid blur
+                    onMouseEnter={() => setHighlightIndex(index)} // highlight on hover
+                  >
+                    {name}
+                  </li>
+                );
+              })}
             </ul>
           )}
         </div>
